@@ -1,3 +1,3 @@
 # nuxt-auth0
 
-This is how i implement Auth0 Lock on nuxt.js
+This is my Auth0 Lock implementation on nuxt.js
