@@ -9,43 +9,62 @@ const lock = new Auth0Lock(
       redirectUrl: 'http://localhost:3000/login', // If not specified, defaults to the current page
       responseType: 'token id_token',
       params: {
-        scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+        scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
       }
     }
   }
 )
 
-export default (context, inject) => {
-  const checkSession = new Promise((resolve, reject) => {
-    lock.checkSession({}, (err, authResult) => {
-      if (err || !authResult) {
-        return reject(err || new Error('No auth result'))
-      }
-
-      resolve(authResult)
-    })
-  })
+export default (ctx, inject) => {
+  let silentCheck = null
 
   inject('auth0Lock', {
-    on: lock.on,
+    instance: lock,
 
     show () {
       lock.show()
     },
 
-    async silentCheck (time, next) {
-      try {
-        const defaultTime = 15 * 60 * 1000
-        const authResult = await checkSession()
+    hide () {
+      lock.hide()
+    },
 
-        if (next) {
-          next(authResult)
-        }
+    checkSession (options) {
+      return new Promise((resolve, reject) => {
+        lock.checkSession(options || {}, (err, authResult) => {
+          if (err || !authResult) {
+            return reject(err || new Error('No auth result'))
+          }
 
-        setTimeout(this.checkSession, time || defaultTime)
-      } catch (err) {
-        throw err
+          resolve(authResult)
+        })
+      })
+    },
+
+    silentCheck (next, time) {
+      if (silentCheck) {
+        clearTimeout(silentCheck)
       }
+
+      silentCheck = setTimeout(() => {
+        this.checkSession()
+          .then(authResult => {
+            if (next) next(authResult)
+
+            this.silentCheck(next, time)
+          })
+          .catch(err => {
+            if (err) console.log(err)
+          })
+      }, time || (15 * 60 * 1000))
+    },
+
+    logout () {
+      if (silentCheck) clearTimeout(silentCheck)
+
+      lock.logout({
+        returnTo: 'http://localhost:3000/login'
+      })
     }
   })
 }

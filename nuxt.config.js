@@ -8,6 +8,7 @@ export default {
   },
 
   plugins: [
-    { src: '~/plugins/auth0-lock.js', ssr: false }
+    { src: '~/plugins/auth0-lock.js', ssr: false },
+    { src: '~/plugins/auth-result-handler.js', ssr: false }
   ]
 }

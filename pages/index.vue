@@ -10,6 +10,7 @@
         </nuxt-link>
 
         <nuxt-link
+          v-show="$store.getters.isAuth"
           to="/profile"
           class="header-item"
         >
@@ -17,6 +18,7 @@
         </nuxt-link>
 
         <nuxt-link
+          v-show="!$store.getters.isAuth"
           to="/login"
           class="header-item"
         >
@@ -24,8 +26,10 @@
         </nuxt-link>
 
         <nuxt-link
+          v-show="$store.getters.isAuth"
           to="#"
           class="header-item"
+          @click.native="logout"
         >
           Logout
         </nuxt-link>
@@ -42,16 +46,6 @@
 </template>
 
 <style>
-body, html {
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
-}
-
-.container {
-  box-sizing: border-box;
-}
-
 header {
   border-bottom: 1px solid rgba(0, 0, 0, .15);
 }
@@ -66,11 +60,19 @@ header a.header-item {
   color: #000000;
   opacity: .5;
 }
+</style>
 
-@media screen and (min-width: 1200px) {
-  .container {
-    width: 1024px;
-    margin: 0 auto;
+<script>
+import Cookie from 'js-cookie'
+
+export default {
+  methods: {
+    logout () {
+      Cookie.remove('_itkn')
+
+      this.$store.commit('resetAuth')
+      this.$auth0Lock.logout()
+    }
   }
 }
-</style>
+</script>
