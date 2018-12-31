@@ -32,9 +32,7 @@ export default (ctx, inject) => {
     checkSession (options) {
       return new Promise((resolve, reject) => {
         lock.checkSession(options || {}, (err, authResult) => {
-          if (err || !authResult) {
-            return reject(err || new Error('No auth result'))
-          }
+          if (err || !authResult) return reject(err || new Error('No auth result'))
 
           resolve(authResult)
         })
@@ -42,9 +40,7 @@ export default (ctx, inject) => {
     },
 
     silentCheck (next, time) {
-      if (silentCheck) {
-        clearTimeout(silentCheck)
-      }
+      if (silentCheck) clearTimeout(silentCheck)
 
       silentCheck = setTimeout(() => {
         this.checkSession()
@@ -57,6 +53,16 @@ export default (ctx, inject) => {
             if (err) console.log(err)
           })
       }, time || (15 * 60 * 1000))
+    },
+
+    getProfile (accessToken) {
+      return new Promise((resolve, reject) => {
+        lock.getUserInfo(accessToken, (err, profile) => {
+          if (err) return reject(err)
+
+          resolve(profile)
+        })
+      })
     },
 
     logout () {

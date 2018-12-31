@@ -1,9 +1,12 @@
 <template>
-  <div
-    id="login-page"
-    style="padding-top: 32px;"
-  />
+  <div id="login-page" />
 </template>
+
+<style>
+#login-page {
+  padding-top: 32px;
+}
+</style>
 
 <script>
 export default {
