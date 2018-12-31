@@ -4,8 +4,8 @@
     v-show="profile.loaded"
   >
     <img
+      class="profile-picture"
       :src="profile.picture"
-      style="width: 80px; height: 80px; border-radius: 50%;"
     >
 
     <p>
@@ -25,6 +25,12 @@
 <style>
 #profile-page {
   padding-top: 32px;
+}
+
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
 }
 </style>
 

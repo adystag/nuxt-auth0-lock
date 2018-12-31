@@ -36,16 +36,18 @@
       </div>
     </header>
 
-    <div
-      class="container"
-      style="padding: 0 16px;"
-    >
+    <div class="container">
       <nuxt-child />
     </div>
   </div>
 </template>
 
 <style>
+.container {
+  box-sizing: border-box;
+  padding: 0 16px;
+}
+
 header {
   border-bottom: 1px solid rgba(0, 0, 0, .15);
 }
@@ -59,6 +61,13 @@ header a.header-item {
   text-decoration: none;
   color: #000000;
   opacity: .5;
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 1024px;
+    margin: 0 auto;
+  }
 }
 </style>
 

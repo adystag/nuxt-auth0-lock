@@ -1,12 +1,12 @@
 import Auth0Lock from 'auth0-lock'
 
 const lock = new Auth0Lock(
-  'f2h2z6GnFLqj9l9zJqfSwpAzjcGlX8X4',
-  'mytestdev21.auth0.com',
+  'YOUR_CLIENT_ID',
+  'YOUR_DOMAIN',
   {
     container: 'login-page',
     auth: {
-      redirectUrl: 'http://localhost:3000/login', // If not specified, defaults to the current page
+      redirectUrl: 'http://YOUR/CALLBACK', // If not specified, defaults to the current page
       responseType: 'token id_token',
       params: {
         scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
@@ -69,7 +69,7 @@ export default (ctx, inject) => {
       if (silentCheck) clearTimeout(silentCheck)
 
       lock.logout({
-        returnTo: 'http://localhost:3000/login'
+        returnTo: 'http://YOUR/RETURN_TO'
       })
     }
   })

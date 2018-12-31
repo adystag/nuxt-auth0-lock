@@ -8,17 +8,6 @@ body, html {
   padding: 0;
   font-size: 16px;
 }
-
-.container {
-  box-sizing: border-box;
-}
-
-@media screen and (min-width: 1200px) {
-  .container {
-    width: 1024px;
-    margin: 0 auto;
-  }
-}
 </style>
 
 <script>
